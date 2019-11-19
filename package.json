@@ -2,12 +2,15 @@
   "name": "trips",
   "version": "0.0.0",
   "license": "MIT",
+  "homepage": "https://dvrpcfreight.github.io/trips-playground",
   "scripts": {
     "start-local": "webpack-dev-server --env.local --progress --hot --open",
-    "start": "webpack-dev-server --progress --hot --open"
+    "start": "webpack-dev-server --progress --hot --open --port 8000",
+    "build": "webpack"
   },
   "dependencies": {
     "deck.gl": "^7.3.0",
+    "gh-pages": "^2.1.1",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
     "react-map-gl": "^5.0.0"

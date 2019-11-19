@@ -13,10 +13,8 @@ const MAPBOX_TOKEN = 'pk.eyJ1IjoibXJ1YW5lIiwiYSI6ImNpZ3dnaGF1bjBzNGZ3N201bTQwN3h
 
 // Source data CSV
 const DATA_URL = {
-  BUILDINGS:
-    'https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/buildings.json', // eslint-disable-line
   TRIPS:
-    '/data/tripsv2.json' // eslint-disable-line
+    '/data/tripsv4.json' // eslint-disable-line
 };
 
 const ambientLight = new AmbientLight({
@@ -50,12 +48,10 @@ const DEFAULT_THEME = {
 const INITIAL_VIEW_STATE = {
   longitude: -75.16,
   latitude: 39.952,
-  zoom: 13,
-  pitch: 45,
+  zoom: 9,
+  pitch: 0,
   bearing: 0
 };
-
-const landCover = [[[-74.0, 40.7], [-74.02, 40.7], [-74.02, 40.72], [-74.0, 40.72]]];
 
 export class App extends Component {
   constructor(props) {
@@ -77,8 +73,8 @@ export class App extends Component {
 
   _animate() {
     const {
-      loopLength = 86400, // unit corresponds to the timestamp in source data
-      animationSpeed = 72 // unit time per second
+      loopLength = 172799, // unit corresponds to the timestamp in source data
+      animationSpeed = 180 // unit time per second
     } = this.props;
     const timestamp = Date.now()/1000; 
     const loopTime = loopLength / animationSpeed;
@@ -91,21 +87,12 @@ export class App extends Component {
 
   _renderLayers() {
     const {
-      buildings = DATA_URL.BUILDINGS,
       trips = DATA_URL.TRIPS,
-      trailLength = 600,
+      trailLength = 360,
       theme = DEFAULT_THEME
     } = this.props;
 
     return [
-      // This is only needed when using shadow effects
-      new PolygonLayer({
-        id: 'ground',
-        data: landCover,
-        getPolygon: f => f,
-        stroked: false,
-        getFillColor: [0, 0, 0, 0]
-      }),
       new TripsLayer({
         id: 'trips',
         data: trips,
@@ -117,19 +104,7 @@ export class App extends Component {
         rounded: true,
         trailLength,
         currentTime: this.state.time,
-
         shadowEnabled: false
-      }),
-      new PolygonLayer({
-        id: 'buildings',
-        data: buildings,
-        extruded: true,
-        wireframe: false,
-        opacity: 0.5,
-        getPolygon: f => f.polygon,
-        getElevation: f => f.height,
-        getFillColor: theme.buildingColor,
-        material: theme.material
       })
     ];
   }
